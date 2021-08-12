@@ -152,3 +152,77 @@ test('press hard break', async ({ page }) => {
     await editor.press('Shift+Enter');
     expect(await editor.$$('.hardbreak')).toHaveLength(2);
 });
+
+test.describe('board Shortcuts', () => {
+    test('code-inline Mod-e', async ({ page }) => {
+        await page.goto('/#/preset-commonmark');
+        const editor = await page.waitForSelector('.editor');
+        await editor.type('something');
+        await editor.press('Shift');
+        await editor.press('ArrowLeft+ArrowLeft+ArrowLeft');
+        await editor.press('Mod+E');
+        const element = await editor.waitForSelector('p .code-inline');
+        expect(element).toBeTruthy();
+        expect(element.textContent).toEqual('ing');
+
+        // undo
+        await editor.press('Shift');
+        await editor.press('ArrowLeft+ArrowLeft+ArrowLeft');
+        await editor.press('Mod+E');
+        const undoEelement = await editor.waitForSelector('p .code-inline');
+        expect(undoEelement).toBeFalsy();
+    })
+
+    test('em Mod-i', async ({ page }) => {
+        await page.goto('/#/preset-commonmark');
+        const editor = await page.waitForSelector('.editor');
+        await editor.type('something');
+        await editor.press('Shift');
+        await editor.press('ArrowLeft+ArrowLeft+ArrowLeft');
+        await editor.press('Mod+I');
+        const element = await editor.waitForSelector('p em.em');
+        expect(element).toBeTruthy();
+        expect(element.textContent).toEqual('ing');
+
+        // undo
+        await editor.press('Shift');
+        await editor.press('ArrowLeft+ArrowLeft+ArrowLeft');
+        await editor.press('Mod+I');
+        const undoEelement = await editor.waitForSelector('p em.em');
+        expect(undoEelement).toBeFalsy();
+    })
+
+    test('strong Mod-i', async ({ page }) => {
+        await page.goto('/#/preset-commonmark');
+        const editor = await page.waitForSelector('.editor');
+        await editor.type('something');
+        await editor.press('Shift');
+        await editor.press('ArrowLeft+ArrowLeft+ArrowLeft');
+        await editor.press('Mod+B');
+        const element = await editor.waitForSelector('p strong.strong');
+        expect(element).toBeTruthy();
+        expect(element.textContent).toEqual('ing');
+
+        // undo
+        await editor.press('Shift');
+        await editor.press('ArrowLeft+ArrowLeft+ArrowLeft');
+        await editor.press('Mod+B');
+        const undoEelement = await editor.waitForSelector('p strong.strong');
+        expect(undoEelement).toBeFalsy();
+    })
+
+    test('strong Mod-Shift-b', async ({ page }) => {
+        await page.goto('/#/preset-commonmark');
+        const editor = await page.waitForSelector('.editor');
+        await editor.press('Mod+Shift+B');
+        await editor.type('// write');
+        await editor.press('Shift');
+        await editor.type('// something');
+        await editor.press('Shift');
+        await editor.type('// here');
+        const paragraphList = await editor.$$('p blockquote.blockquote .paragraph');
+        const firstElement = await editor.waitForSelector('p blockquote.blockquote:nth-child(1)');
+        expect(paragraphList).toHaveLength(3);
+        expect(firstElement.textContent).toEqual('// write');
+    })
+})

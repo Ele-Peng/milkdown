@@ -14,7 +14,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: checkout code repository
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3.1.0
               with:
                   fetch-depth: 0
             - name: setup node.js
@@ -49,7 +49,7 @@ jobs:
         needs: test
         steps:
             - name: checkout code repository
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3.1.0
               with:
                   fetch-depth: 0
             - name: setup node.js
@@ -89,7 +89,7 @@ jobs:
         needs: test
         steps:
             - name: checkout code repository
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3.1.0
               with:
                   fetch-depth: 0
             - name: setup node.js
